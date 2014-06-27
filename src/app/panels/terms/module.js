@@ -151,8 +151,12 @@ function (angular, app, _, $, kbn) {
         results,
         boolQuery,
         queries;
-
-      $scope.field = _.contains(fields.list,$scope.panel.field+'.raw') ?
+        
+        
+      // defaulting to .raw is nice, but sometimes I don't want to
+      // I'm ok with specifying message.raw when desired
+      $scope.field = !_.contains(fields.list,$scope.panel.field) && 
+        _.contains(fields.list,$scope.panel.field+'.raw') ?
         $scope.panel.field+'.raw' : $scope.panel.field;
 
       request = $scope.ejs.Request().indices(dashboard.indices);
