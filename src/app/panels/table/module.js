@@ -466,7 +466,41 @@ function (angular, app, _, kbn, moment) {
       return obj;
     };
 
+    $scope.create_jira = function(source) {
+      var method = 'POST';
+      var url = "/create_jira/";
+      var settings = {
+        dataType: "text",
+        type: method,
+        success: function (data, textStatus, jqXHR) {
+          alert("Created " + JSON.parse(jqXHR['responseText'])['key']);
+        },
+        error: function (jqXHR, textStatus) {
+          alert("Failed to create ticket");
+        }
+      };
 
+      if (method === 'POST') {
+        settings.contentType = 'application/json';
+        settings.data = JSON.stringify({
+        "fields": {
+          "project":
+            {
+            "key": "DEF"
+            },
+          "summary": source['message'],
+          "description": "{noformat}" + source['Properties.Exception.StackTraceString']
+                          + "{noformat}\r\n\r\nOrigin: "+ source['Properties.Origin']
+                          + "\r\n\r\n[Logstash|http://logging/#/dashboard/elasticsearch/Exceptions_Query?_query=Properties.Origin:"
+                          + source['Properties.Origin']+"]",
+          "issuetype": {
+            "name": "Defect"
+            }
+          }
+        });
+      }
+      $.ajax(url, settings);
+    };
   });
 
   // This also escapes some xml sequences

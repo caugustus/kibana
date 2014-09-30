@@ -160,6 +160,9 @@
                   <a class="link" ng-class="{'strong':event.kibana.view == 'raw'}" ng-click="event.kibana.view = 'raw'">Raw</a>
                   <i class="link pull-right icon-chevron-up" ng-click="toggle_details(event)"></i>
                 </span>
+                <div>
+                <a class="link strong" ng-if="event.kibana._source['message'] != 'None Found'" ng-click="create_jira(event.kibana._source)">Create Jira Ticket</a>
+                </div>
                 <table class='table table-bordered table-condensed table-details' ng-switch-when="table">
                   <thead>
                     <th class="table-details-field">Field</th>
