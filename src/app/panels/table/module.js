@@ -466,9 +466,42 @@ function (angular, app, _, kbn, moment) {
       return obj;
     };
 
+    $scope.link_to_existing_jira = function(source) {
+      var ticket  = prompt("Enter JIRA Ticket to link");
+      var url = "/jira/" + ticket;
+
+      var method = 'GET';
+      var settings = {
+      dataType: "text",
+      async:false,
+      type: method,
+      error: function (jqXHR, textStatus) {
+        alert("Failed to update ticket" + jqXHR + textStatus);
+        }
+      };
+
+      $.when ( $.ajax(url, settings) ).done(function (d) {
+        var method = 'PUT';
+        settings.type = method;
+        settings.contentType = 'application/json';
+        settings.success = function (data, textStatus, jqXHR) {
+          alert("Linked to ticket " + ticket);
+        };
+        settings.data = JSON.stringify({
+          "fields": {
+            "description": JSON.parse(d)['fields']['description']
+                           + "\r\n\r\nOrigin: "+ source['Properties.Origin']
+                           + "\r\n\r\n[Logstash|http://logging/#/dashboard/elasticsearch/Exceptions_Query?_query=Properties.Origin:"
+                           + source['Properties.Origin']+"]"
+            }
+          });
+        $.ajax(url, settings);
+      });
+    };
+
     $scope.create_jira = function(source) {
       var method = 'POST';
-      var url = "/create_jira/";
+      var url = "/jira/";
       var settings = {
         dataType: "text",
         type: method,
@@ -560,7 +593,7 @@ function (angular, app, _, kbn, moment) {
     };
   });
 
-  // WIP
+  //WIP
   module.filter('tableLocalTime', function(){
     return function(text,event) {
       return moment(event.sort[1]).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
