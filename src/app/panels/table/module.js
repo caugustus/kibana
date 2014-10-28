@@ -470,13 +470,15 @@ function (angular, app, _, kbn, moment) {
       var ticket  = prompt("Enter JIRA Ticket to link");
       var url = "/jira/" + ticket;
 
+
+
       var method = 'GET';
       var settings = {
-      dataType: "text",
-      async:false,
-      type: method,
-      error: function (jqXHR, textStatus) {
-        alert("Failed to update ticket" + jqXHR + textStatus);
+        dataType: "text",
+        async:false,
+        type: method,
+        error: function (jqXHR, textStatus) {
+          alert("Failed to update ticket" + jqXHR + textStatus);
         }
       };
 
@@ -484,7 +486,7 @@ function (angular, app, _, kbn, moment) {
         var method = 'PUT';
         settings.type = method;
         settings.contentType = 'application/json';
-        settings.success = function (data, textStatus, jqXHR) {
+        settings.success = function () {
           alert("Linked to ticket " + ticket);
         };
         settings.data = JSON.stringify({
@@ -493,8 +495,8 @@ function (angular, app, _, kbn, moment) {
                            + "\r\n\r\nOrigin: "+ source['Properties.Origin']
                            + "\r\n\r\n[Logstash|http://logging/#/dashboard/elasticsearch/Exceptions_Query?_query=Properties.Origin:"
                            + source['Properties.Origin']+"]"
-            }
-          });
+          }
+        });
         $.ajax(url, settings);
       });
     };
@@ -505,10 +507,10 @@ function (angular, app, _, kbn, moment) {
       var settings = {
         dataType: "text",
         type: method,
-        success: function (data, textStatus, jqXHR) {
+        success: function (jqXHR) {
           alert("Created " + JSON.parse(jqXHR['responseText'])['key']);
         },
-        error: function (jqXHR, textStatus) {
+        error: function () {
           alert("Failed to create ticket");
         }
       };
@@ -516,18 +518,17 @@ function (angular, app, _, kbn, moment) {
       if (method === 'POST') {
         settings.contentType = 'application/json';
         settings.data = JSON.stringify({
-        "fields": {
-          "project":
-            {
-            "key": "DEF"
+          "fields": {
+            "project": {
+              "key": "DEF"
             },
-          "summary": source['message'],
-          "description": "{noformat}" + source['Properties.Exception.StackTraceString']
-                          + "{noformat}\r\n\r\nOrigin: "+ source['Properties.Origin']
-                          + "\r\n\r\n[Logstash|http://logging/#/dashboard/elasticsearch/Exceptions_Query?_query=Properties.Origin:"
-                          + source['Properties.Origin']+"]",
-          "issuetype": {
-            "name": "Defect"
+            "summary": source['message'],
+            "description": "{noformat}" + source['Properties.Exception.StackTraceString']
+                            + "{noformat}\r\n\r\nOrigin: "+ source['Properties.Origin']
+                            + "\r\n\r\n[Logstash|http://logging/#/dashboard/elasticsearch/Exceptions_Query?_query=Properties.Origin:"
+                            + source['Properties.Origin']+"]",
+            "issuetype": {
+              "name": "Defect"
             }
           }
         });
