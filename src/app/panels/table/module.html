@@ -161,8 +161,8 @@
                   <i class="link pull-right icon-chevron-up" ng-click="toggle_details(event)"></i>
                 </span>
                 <div>
-                <a class="link strong" ng-if="event.kibana._source['message'] == 'None Found'" ng-click="create_jira(event.kibana._source)">Create Jira Ticket</a> /
-                <a class="link strong" ng-if="event.kibana._source['message'] == 'None Found'" ng-click="link_to_existing_jira(event.kibana._source)">Link to Existing Jira Ticket</a>
+                <a class="link strong" ng-if="event.kibana._source['jiraTicket'] == 'None Found'" ng-click="create_jira(event.kibana._source)">Create Jira Ticket</a> /
+                <a class="link strong" ng-if="event.kibana._source['jiraTicket'] == 'None Found'" ng-click="link_to_existing_jira(event.kibana._source)">Link to Existing Jira Ticket</a>
                 </div>
                 <table class='table table-bordered table-condensed table-details' ng-switch-when="table">
                   <thead>
