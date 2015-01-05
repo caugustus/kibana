@@ -470,8 +470,6 @@ function (angular, app, _, kbn, moment) {
       var ticket  = prompt("Enter JIRA Ticket to link");
       var url = "/jira/" + ticket;
 
-
-
       var method = 'GET';
       var settings = {
         dataType: "text",
@@ -523,7 +521,7 @@ function (angular, app, _, kbn, moment) {
               "key": "DEF"
             },
             "summary": source['message'],
-            "description": "{noformat}" + source['Properties.Exception.StackTraceString']
+            "description": "{noformat}" + source['Properties.Exception.StackTrace']
                             + "{noformat}\r\n\r\nOrigin: "+ source['Properties.Origin']
                             + "\r\n\r\n[Logstash|http://logging/#/dashboard/elasticsearch/Exceptions_Query?_query=Properties.Origin:"
                             + source['Properties.Origin']+"]",
