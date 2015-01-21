@@ -491,7 +491,7 @@ function (angular, app, _, kbn, moment) {
           "fields": {
             "description": JSON.parse(d)['fields']['description']
                            + "\r\n\r\nOrigin: "+ source['Properties.Origin']
-                           + "\r\n\r\n[Logstash|http://logging/#/dashboard/elasticsearch/Exceptions_Query?_query=Properties.Origin:"
+                           + "\r\n\r\n[Logstash|http://logging/#/dashboard/elasticsearch/Exceptions_Query?query=Properties.Origin:"
                            + source['Properties.Origin']+"]"
           }
         });
