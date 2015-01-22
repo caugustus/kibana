@@ -500,6 +500,7 @@ function (angular, app, _, kbn, moment) {
     };
 
     $scope.create_jira = function(source) {
+      $scope.disable_create_jira = true
       var method = 'POST';
       var url = "/jira/";
       var settings = {
