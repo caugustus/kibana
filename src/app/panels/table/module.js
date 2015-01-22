@@ -506,7 +506,7 @@ function (angular, app, _, kbn, moment) {
         dataType: "text",
         type: method,
         success: function (jqXHR) {
-          alert("Created " + JSON.parse(jqXHR['responseText'])['key']);
+          alert("Created " + JSON.parse(jqXHR)['key']);
         },
         error: function () {
           alert("Failed to create ticket");
@@ -520,10 +520,10 @@ function (angular, app, _, kbn, moment) {
             "project": {
               "key": "DEF"
             },
-            "summary": source['message'],
+            "summary": source['message'].substring(0,250),
             "description": "{noformat}" + source['Properties.Exception.StackTrace']
                             + "{noformat}\r\n\r\nOrigin: "+ source['Properties.Origin']
-                            + "\r\n\r\n[Logstash|http://logging/#/dashboard/elasticsearch/Exceptions_Query?_query=Properties.Origin:"
+                            + "\r\n\r\n[Logstash|http://logging/#/dashboard/elasticsearch/Exceptions_Query?query=Properties.Origin:"
                             + source['Properties.Origin']+"]",
             "issuetype": {
               "name": "Defect"
