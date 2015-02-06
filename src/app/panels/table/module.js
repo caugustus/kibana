@@ -466,6 +466,14 @@ function (angular, app, _, kbn, moment) {
       return obj;
     };
 
+    $scope.link_logstash_with_jira = function(origin, jira) {
+      var url = '/teamcity/httpAuth/action.html?add2Queue=Helpers_LinkJiraToLogstash'
+                + '&name=env.origin&value=' + origin
+                + '&name=env.jira_ticket&value=' + jira;
+      $.get(url).fail(function(data) {
+        console.log("Something went wrong calling teamcity " + data)});
+    };
+
     $scope.link_to_existing_jira = function(source) {
       var ticket  = prompt("Enter JIRA Ticket to link");
       var url = "/jira/" + ticket;
@@ -485,6 +493,7 @@ function (angular, app, _, kbn, moment) {
         settings.type = method;
         settings.contentType = 'application/json';
         settings.success = function () {
+          $scope.link_logstash_with_jira(source['Properties.Origin'], ticket);
           alert("Linked to ticket " + ticket);
         };
         settings.data = JSON.stringify({
@@ -497,6 +506,7 @@ function (angular, app, _, kbn, moment) {
         });
         $.ajax(url, settings);
       });
+
     };
 
     $scope.create_jira = function(source) {
@@ -507,7 +517,9 @@ function (angular, app, _, kbn, moment) {
         dataType: "text",
         type: method,
         success: function (jqXHR) {
-          alert("Created " + JSON.parse(jqXHR)['key']);
+          var jira_ticket = JSON.parse(jqXHR)['key'];
+          link_logstash_with_jira(source['Properties.Origin'], jira_ticket);
+          alert("Created " + jira_ticket);
         },
         error: function () {
           alert("Failed to create ticket");
